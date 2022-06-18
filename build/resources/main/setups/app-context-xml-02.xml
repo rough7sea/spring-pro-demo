@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/aop
+               http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <aop:config>
+        <aop:pointcut id="singExecution"
+                      expression="execution(* sing*(org.example.demo.aop.spring.aop_setup_2.Guitar))
+                      and args(value) and bean(john*)"/>
+        <aop:aspect ref="advice">
+            <aop:before pointcut-ref="singExecution" method="simpleBeforeAdvice"/>
+            <aop:around pointcut-ref="singExecution" method="simpleAroundAdvice"/>
+        </aop:aspect>
+    </aop:config>
+    <bean id="advice" class="org.example.demo.aop.spring.aop_setup_2.ComplexAdvice"/>
+    <bean id="johnMayer" class="org.example.demo.aop.spring.aop_setup_2.SingerIImpl"/>
+    <bean id="documentarist" class="org.example.demo.aop.spring.aop_setup_2.NewDocumentarist">
+        <constructor-arg ref="johnMayer"/>
+    </bean>
+</beans>
